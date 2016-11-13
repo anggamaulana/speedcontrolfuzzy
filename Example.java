@@ -113,7 +113,7 @@ public class Example {
                     + "The following errors were encountered:\n" + status.toString());
         }
 
-        for (int i = 0; i < 50; ++i) {
+        for (int i = 0; i < 100; ++i) {
         //     double light = ambient.getMinimum() + i * (ambient.range() / 50);
             double temp=Math.random()*100;
             double kem=Math.random()*30;
@@ -124,7 +124,7 @@ public class Example {
             inputVariable3.setInputValue(fuel);
             engine.process();
             FuzzyLite.logger().info(String.format(
-                    "Temperature.input = %s \n Kemacetan.input = %s \n BahanBakar.input = %s \n-> Kecepatan.output = %s\n\n=============",
+                    "\nTemperature.input = %s Celcius \n Kemacetan.input = %s Kendaraan/Menit\n BahanBakar.input = %s Liter \n-> Kecepatan.output = %s Km/h\n\n=============",
                     Op.str(temp),Op.str(kem),Op.str(fuel), Op.str(outputVariable.getOutputValue())));
              Thread.sleep(2000);
         }
