@@ -1,0 +1,72 @@
+Engine: speed control
+InputVariable: temperature
+  enabled: true
+  range: 0.000 100.000
+  term: dingin Trapezoid 0.000 0.000 15.000 22.000
+  term: sejuk Triangle 15.000 25.000 30.000
+  term: hangat Triangle 25.000 40.000 55.000
+  term: panas Trapezoid 40.000 60.000 100.000 100.000
+InputVariable: kemacetan
+  enabled: true
+  range: 0.000 30.000
+  term: lengang Trapezoid 0.000 0.000 5.000 10.000
+  term: sedang Triangle 5.000 15.000 25.000
+  term: padat Trapezoid 15.000 25.000 30.000 30.000
+InputVariable: bahanbakar
+  enabled: true
+  range: 0.000 50.000
+  term: kosong Trapezoid 0.000 0.000 5.000 10.000
+  term: sedang Triangle 5.000 18.000 28.000
+  term: penuh Trapezoid 18.000 38.000 50.000 50.000
+OutputVariable: kecepatan
+  enabled: true
+  range: 0.000 200.000
+  accumulation: DrasticSum
+  defuzzifier: Centroid 200
+  default: nan
+  lock-valid: false
+  lock-range: false
+  term: lambat Trapezoid 0.000 0.000 25.000 50.000
+  term: sedang Triangle 40.000 70.000 100.000
+  term: cepat Trapezoid 70.000 110.000 200.000 200.000
+RuleBlock: 
+  enabled: true
+  conjunction: Minimum
+  disjunction: Maximum
+  activation: Minimum
+  rule: if temperature is dingin and kemacetan is lengang and bahanbakar is kosong then kecepatan is lambat
+  rule: if temperature is dingin and kemacetan is lengang and bahanbakar is sedang then kecepatan is sedang
+  rule: if temperature is dingin and kemacetan is lengang and bahanbakar is penuh then kecepatan is cepat
+  rule: if temperature is dingin and kemacetan is sedang and bahanbakar is kosong then kecepatan is lambat
+  rule: if temperature is dingin and kemacetan is sedang and bahanbakar is sedang then kecepatan is sedang
+  rule: if temperature is dingin and kemacetan is sedang and bahanbakar is penuh then kecepatan is sedang
+  rule: if temperature is dingin and kemacetan is padat and bahanbakar is kosong then kecepatan is lambat
+  rule: if temperature is dingin and kemacetan is padat and bahanbakar is sedang then kecepatan is lambat
+  rule: if temperature is dingin and kemacetan is padat and bahanbakar is penuh then kecepatan is lambat
+  rule: if temperature is sejuk and kemacetan is lengang and bahanbakar is kosong then kecepatan is lambat
+  rule: if temperature is sejuk and kemacetan is lengang and bahanbakar is sedang then kecepatan is sedang
+  rule: if temperature is sejuk and kemacetan is lengang and bahanbakar is penuh then kecepatan is cepat
+  rule: if temperature is sejuk and kemacetan is sedang and bahanbakar is kosong then kecepatan is lambat
+  rule: if temperature is sejuk and kemacetan is sedang and bahanbakar is sedang then kecepatan is sedang
+  rule: if temperature is sejuk and kemacetan is sedang and bahanbakar is penuh then kecepatan is sedang
+  rule: if temperature is sejuk and kemacetan is padat and bahanbakar is kosong then kecepatan is lambat
+  rule: if temperature is sejuk and kemacetan is padat and bahanbakar is sedang then kecepatan is lambat
+  rule: if temperature is sejuk and kemacetan is padat and bahanbakar is penuh then kecepatan is lambat
+  rule: if temperature is hangat and kemacetan is lengang and bahanbakar is kosong then kecepatan is lambat
+  rule: if temperature is hangat and kemacetan is lengang and bahanbakar is sedang then kecepatan is sedang
+  rule: if temperature is hangat and kemacetan is lengang and bahanbakar is penuh then kecepatan is cepat
+  rule: if temperature is hangat and kemacetan is sedang and bahanbakar is kosong then kecepatan is lambat
+  rule: if temperature is hangat and kemacetan is sedang and bahanbakar is sedang then kecepatan is sedang
+  rule: if temperature is hangat and kemacetan is sedang and bahanbakar is penuh then kecepatan is sedang
+  rule: if temperature is hangat and kemacetan is padat and bahanbakar is kosong then kecepatan is lambat
+  rule: if temperature is hangat and kemacetan is padat and bahanbakar is sedang then kecepatan is lambat
+  rule: if temperature is hangat and kemacetan is padat and bahanbakar is penuh then kecepatan is lambat
+  rule: if temperature is panas and kemacetan is lengang and bahanbakar is kosong then kecepatan is lambat
+  rule: if temperature is panas and kemacetan is lengang and bahanbakar is sedang then kecepatan is sedang
+  rule: if temperature is panas and kemacetan is lengang and bahanbakar is penuh then kecepatan is cepat
+  rule: if temperature is panas and kemacetan is sedang and bahanbakar is kosong then kecepatan is sedang
+  rule: if temperature is panas and kemacetan is sedang and bahanbakar is sedang then kecepatan is sedang
+  rule: if temperature is panas and kemacetan is sedang and bahanbakar is penuh then kecepatan is sedang
+  rule: if temperature is panas and kemacetan is padat and bahanbakar is kosong then kecepatan is lambat
+  rule: if temperature is panas and kemacetan is padat and bahanbakar is sedang then kecepatan is lambat
+  rule: if temperature is panas and kemacetan is padat and bahanbakar is penuh then kecepatan is lambat
