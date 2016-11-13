@@ -113,16 +113,20 @@ public class Example {
                     + "The following errors were encountered:\n" + status.toString());
         }
 
-        // for (int i = 0; i < 50; ++i) {
+        for (int i = 0; i < 50; ++i) {
         //     double light = ambient.getMinimum() + i * (ambient.range() / 50);
-            inputVariable1.setInputValue(20);
-            inputVariable2.setInputValue(15);
-            inputVariable3.setInputValue(10);
+            double temp=Math.random()*100;
+            double kem=Math.random()*30;
+            double fuel=Math.random()*50;
+
+            inputVariable1.setInputValue(temp);
+            inputVariable2.setInputValue(kem);
+            inputVariable3.setInputValue(fuel);
             engine.process();
             FuzzyLite.logger().info(String.format(
-                    "Temperature.input = %s & Kemacetan.input = %s & BahanBakar.input = %s -> Kecepatan.output = %s",
-                    Op.str(20),Op.str(15),Op.str(10), Op.str(outputVariable.getOutputValue())));
-             // Thread.sleep(2000);
-        // }
+                    "Temperature.input = %s \n Kemacetan.input = %s \n BahanBakar.input = %s \n-> Kecepatan.output = %s\n\n=============",
+                    Op.str(temp),Op.str(kem),Op.str(fuel), Op.str(outputVariable.getOutputValue())));
+             Thread.sleep(2000);
+        }
     }
 }
