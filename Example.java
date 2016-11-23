@@ -398,18 +398,6 @@ public class Example {
 			}
 			return 0;
 		}
-		
-		int getFuzzyLinguistic(int type) {
-			if(type>=1 && type<=4){
-				return 1;
-			}else if(type>=5 && type<=7){
-				return 2;
-			}else if(type>=8 && type<=10){
-				return 3;
-			}else{
-				return 0;
-			}
-		}
 
 		// MEMBERSHIP FUNCTION
 		// BEGIN----------------------------------------------------------------
