@@ -231,9 +231,16 @@ public class Example {
 
 		for (int i = 0; i < 100; ++i) {
 			// double light = ambient.getMinimum() + i * (ambient.range() / 50);
-			double temp = Math.random() * 100;
-			double kem = Math.random() * 30;
-			double fuel = Math.random() * 50;
+			double temp, kem, fuel;
+			if (args.length < 3) {
+				temp = Math.random() * 100;
+				kem = Math.random() * 30;
+				fuel = Math.random() * 50;
+			} else {
+				temp = Double.parseDouble(args[0]);
+				kem = Double.parseDouble(args[1]);
+				fuel = Double.parseDouble(args[2]);
+			}
 
 			inputVariable1.setInputValue(temp);
 			inputVariable2.setInputValue(kem);
@@ -245,7 +252,6 @@ public class Example {
 							.format("\nTemperature.input = %s Celcius \n Kemacetan.input = %s Kendaraan/Menit\n BahanBakar.input = %s Liter \n\n\n-> Kecepatan.output(centroid) = %s Km/h",
 									Op.str(temp), Op.str(kem), Op.str(fuel),
 									Op.str(outputVariable.getOutputValue())));
-			
 
 			Fuzzy f = new Fuzzy();
 			// fuzzifikasi
@@ -254,23 +260,25 @@ public class Example {
 			// x3 is c maka
 			// r1:[0.2, 0.3, 0], r2:[0.3, 0.4, 0], dst sejumlah baris rules
 			double[][] a = f.fuzzifikasi(temp, kem, fuel);
-			
-			
+
 			// inference
 			// input : temperature[0.9, 0.2, 0, 0] kemacetan[0.9, 0.2, 0]
 			// bahanbakar[0.9, 0.2, 0]
 			// output : kecepatan[-1,0.4]
 			double[] b = f.inference(a);
-			
 
 			// defuzzifikasi
 			// input : kecepatan[-1, 0.4]
 			// process : MoM(-1,0.4)
 			// output : 100km/h
 			double hasil = f.defuzzifier(b);
-//			System.out.println(Arrays.toString(b));
-			System.out.println("-> Kecepatan.output (MoM) = "+String.valueOf(hasil)+" Km/h\n=============");
-			
+			// System.out.println(Arrays.toString(b));
+			System.out.println("-> Kecepatan.output (MoM) = "
+					+ String.valueOf(hasil) + " Km/h\n=============");
+
+			if (args.length >= 3) {
+				break;
+			}
 			Thread.sleep(4000);
 		}
 
@@ -285,12 +293,11 @@ public class Example {
 		double[][] fuzzifikasi(double temp, double kemacetan, double bensin) {
 			double[][] result = new double[rule.length][3];
 			// fuzzifikasi all rules
-			for(int i=0;i<rule.length;i++){
-				
-				
-				result[i][0]=getFuzzyValue(rule[i][0],temp);
-				result[i][1]=getFuzzyValue(rule[i][1],kemacetan);
-				result[i][2]=getFuzzyValue(rule[i][2],bensin);
+			for (int i = 0; i < rule.length; i++) {
+
+				result[i][0] = getFuzzyValue(rule[i][0], temp);
+				result[i][1] = getFuzzyValue(rule[i][1], kemacetan);
+				result[i][2] = getFuzzyValue(rule[i][2], bensin);
 			}
 			return result;
 		}
@@ -323,36 +330,35 @@ public class Example {
 
 		double defuzzifier(double[] inference) {
 			double result = 0;
-			int jenis = (int)inference[0];
-			double fuzzyVal=inference[1];
+			int jenis = (int) inference[0];
+			double fuzzyVal = inference[1];
 			// using mom
-			
-			if(jenis==-1){
-				//jika lambat
-				//cari batas min dan max
-				double min=0;
-				double max=miringKanan2(25,50,fuzzyVal);
-				result=((0.5*Math.pow(max, 2))-(0.5*Math.pow(min, 2)))/(max-min);
-				
-			}else if(jenis==-2){
-				//jika sedang
-				//cari batas min max
-				double min=miringKiri2(40,70,fuzzyVal);
-				double max=miringKanan2(70,100,fuzzyVal);
-				result=((0.5*Math.pow(max, 2))-(0.5*Math.pow(min, 2)))/(max-min);
-				
-			}else if(jenis==-3){
-				//jika cepat
-				//cari batas min max
-				double min=miringKiri2(70,110,fuzzyVal);
-				double max=200;
-				result=((0.5*Math.pow(max, 2))-(0.5*Math.pow(min, 2)))/(max-min);
-				
+
+			if (jenis == -1) {
+				// jika lambat
+				// cari batas min dan max
+				double min = 0;
+				double max = miringKanan2(25, 50, fuzzyVal);
+				result = ((0.5 * Math.pow(max, 2)) - (0.5 * Math.pow(min, 2)))
+						/ (max - min);
+
+			} else if (jenis == -2) {
+				// jika sedang
+				// cari batas min max
+				double min = miringKiri2(40, 70, fuzzyVal);
+				double max = miringKanan2(70, 100, fuzzyVal);
+				result = ((0.5 * Math.pow(max, 2)) - (0.5 * Math.pow(min, 2)))
+						/ (max - min);
+
+			} else if (jenis == -3) {
+				// jika cepat
+				// cari batas min max
+				double min = miringKiri2(70, 110, fuzzyVal);
+				double max = 200;
+				result = ((0.5 * Math.pow(max, 2)) - (0.5 * Math.pow(min, 2)))
+						/ (max - min);
+
 			}
-			
-			
-			
-			
 
 			return result;
 		}
@@ -399,6 +405,18 @@ public class Example {
 			return 0;
 		}
 
+		int getFuzzyLinguistic(int type) {
+			if (type >= 1 && type <= 4) {
+				return 1;
+			} else if (type >= 5 && type <= 7) {
+				return 2;
+			} else if (type >= 8 && type <= 10) {
+				return 3;
+			} else {
+				return 0;
+			}
+		}
+
 		// MEMBERSHIP FUNCTION
 		// BEGIN----------------------------------------------------------------
 		double miringKanan(double batasMax, double batasMin, double x) {
@@ -408,15 +426,14 @@ public class Example {
 		double miringKiri(double batasMax, double batasMin, double x) {
 			return (x - batasMin) / (batasMax - batasMin);
 		}
-		
+
 		double miringKanan2(double batasMax, double batasMin, double y) {
-			return batasMax-(y*(batasMax-batasMin));
+			return batasMax - (y * (batasMax - batasMin));
 		}
 
 		double miringKiri2(double batasMax, double batasMin, double y) {
-			return (y*(batasMax-batasMin))+batasMin;
+			return (y * (batasMax - batasMin)) + batasMin;
 		}
-
 
 		double dingin(double x) {
 			double result = 0;
@@ -467,7 +484,7 @@ public class Example {
 			if (x <= 5) {
 				result = 1;
 			} else if (x > 5 && x <= 10) {
-				result = miringKanan(5,10, x);
+				result = miringKanan(5, 10, x);
 			}
 			return result;
 
@@ -500,7 +517,7 @@ public class Example {
 			if (x <= 5) {
 				result = 1;
 			} else if (x > 5 && x <= 10) {
-				result = miringKanan(5,10, x);
+				result = miringKanan(5, 10, x);
 			}
 			return result;
 
